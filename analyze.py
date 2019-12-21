@@ -21,7 +21,7 @@ def compute_centrality(name, computed, top):
             file.write("* **" + str(top[i]) + ": " + str(centrality[i]) + "**\n\n")
 
 G=nx.read_pajek("USAir97.net")
-
+G = G.to_undirected(reciprocal=False, as_view=False)
 G1=nx.Graph(G)
 
 with open("slides.md", "w") as file:
@@ -43,10 +43,8 @@ with open("slides.md", "w") as file:
     file.write("**Top ten airports with flights to/from most other airports:** \n\n")
     for i in range(10):
         file.write("* " + str(sorted_d[i][1]) + "\n\n")
-    Gselection = cp.deepcopy(G)
     
-
-
+    Gselection = cp.deepcopy(G)
     remove = sorted_d[10:]
     nodes_to_remove = []
     for r in range(len(remove)):
@@ -63,17 +61,17 @@ with open("slides.md", "w") as file:
         posi = (data['x'],-data['y'])
         positions.setdefault(node, posi)
     
-    nx.draw_networkx(Gselection, pos=positions, with_labels=True, node_size=100, edge_color="#ff000000")
+    nx.draw_networkx(Gselection, pos=positions, with_labels=False, node_size=100, edge_color="#ff000000")
     
     for (u, v, d) in Gselection.edges(data=True):
         w =  d['weight']
         edge = [(u,v,d)]
-        nx.draw_networkx_edges(Gselection, pos=positions, edgelist=edge, equidistant=True, alpha=0.5, width=w*10)
+        nx.draw_networkx_edges(Gselection, pos=positions, edgelist=edge, equidistant=True, alpha=0.5, width=w*20)
     
     plt.savefig('most_other_airports.svg')
     file.write("\n")
     file.write("# Top US airports \n")
-    file.write("![Airports with flights to/from most other airports - map](top.png)")
+    file.write("![Airports with flights to/from most other airports - map](top_reach.png)")
     
     
     power_dict = {}
@@ -98,12 +96,72 @@ with open("slides.md", "w") as file:
     for i in sorted_p:
         file.write("* " + str(power_dict[i]) + "\n\n")
         top.append(power_dict[i])
-
-    G_und = G.to_undirected(reciprocal=False, as_view=False)
+        
+    Gpower = cp.deepcopy(G)    
+        
+    for node in G.nodes:
+        if node not in top:
+            Gpower.remove_node(node)
+    plt.figure(figsize=(8,3.4))
+    #print(Gpower.nodes)
+    positions = {}
+    for node in Gpower.nodes:
+        data = Gpower.nodes[node]
+        posi = (data['x'],-data['y'])
+        positions.setdefault(node, posi)
     
-   
-    compute_centrality("In degree", nx.in_degree_centrality(G) ,top)  
-    compute_centrality("Out degree", nx.out_degree_centrality(G) ,top)        
-    compute_centrality("Degree", nx.degree_centrality(G_und) ,top)
-    compute_centrality("Closeness", nx.closeness_centrality(G_und) ,top)
+    nx.draw_networkx(Gpower, pos=positions, with_labels=False, node_size=100, edge_color="#ff000000")
+    
+    for (u, v, d) in Gpower.edges(data=True):
+        w =  d['weight']
+        edge = [(u,v,d)]
+        nx.draw_networkx_edges(Gpower, pos=positions, edgelist=edge, equidistant=True, alpha=0.5, width=w*20)
+    
+    plt.savefig('most_flights.svg')
+    file.write("\n")
+    file.write("# Top US airports \n")
+    file.write("![Airports with most flights - map](top_flights.png)\n\n")
+    
+    compute_centrality("Degree", nx.degree_centrality(G) ,top)
+    compute_centrality("Closeness", nx.closeness_centrality(G) ,top)
+    
+    file.write("\n")
+    file.write("# Other properties \n")
+    
+    file.write(" * Radius of the graph: **{0}** \n".format(nx.radius(G)))
+    file.write(" * Diameter of the graph: **{0}** \n".format(nx.diameter(G)))
+    degree_sequence = sorted([d for n, d in G.degree()], reverse=True)
+    max_degree = max(degree_sequence)
+    
+    degree_array = np.zeros((max_degree+1))
+    for i in degree_sequence:
+        degree_array[i] += 1
+    non_zero = 0
+    for i in range(max_degree+1):
+        if degree_array[i] != 0:
+            non_zero += 1
+    #print(non_zero)
+    plot_degree = np.zeros((non_zero,2))
+    index = 0
+    for i in range(max_degree):
+        if degree_array[i+1] != 0:
+            plot_degree[index][0] = i+1
+            plot_degree[index][1] = degree_array[i+1]
+            index += 1
+            #print(index, i)
+    
+    #print(plot_degree)
+    x, y = plot_degree.T
+    plt.clf()
+    plt.scatter(x,y)
+    plt.savefig('power_law.png')
+    
+    
+    file.write("\n")
+    file.write("# Power law degree \n")
+    
+    file.write("![](power_law.png)")
+
+    
+    
     

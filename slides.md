@@ -35,7 +35,7 @@ Each edge has weights with indicated how many flights are on given route.
 
 
 # Top US airports 
-![Airports with flights to/from most other airports - map](top.png)
+![Airports with flights to/from most other airports - map](top_reach.png)
 
 # Top US airports 
 **Top ten airports with most flights:** 
@@ -61,52 +61,8 @@ Each edge has weights with indicated how many flights are on given route.
 * Newark Intl
 
 
-# Centralities 
-
-### In degree centrality: 
-* Chicago O'hare Intl: 0.12084592145015105
-
-* **Dallas/Fort Worth Intl: 0.2326283987915408**
-
-* Los Angeles Intl: 0.1268882175226586
-
-* Minneapolis-St Paul Intl/Wold-: 0.04229607250755287
-
-* The William B Hartsfield Atlan: 0.1933534743202417
-
-* Seattle-Tacoma Intl: 0.02416918429003021
-
-* Stapleton Intl: 0.11178247734138973
-
-* San Francisco Intl: 0.11178247734138973
-
-* Lambert-St Louis Intl: 0.13595166163141995
-
-* Newark Intl: 0.060422960725075525
-
-
-# Centralities 
-
-### Out degree centrality: 
-* **Chicago O'hare Intl: 0.2990936555891239**
-
-* Dallas/Fort Worth Intl: 0.12386706948640483
-
-* Los Angeles Intl: 0.0513595166163142
-
-* Minneapolis-St Paul Intl/Wold-: 0.1933534743202417
-
-* The William B Hartsfield Atlan: 0.11178247734138973
-
-* Seattle-Tacoma Intl: 0.14803625377643503
-
-* Stapleton Intl: 0.14501510574018128
-
-* San Francisco Intl: 0.09365558912386707
-
-* Lambert-St Louis Intl: 0.14803625377643503
-
-* Newark Intl: 0.1419939577039275
+# Top US airports 
+![Airports with most flights - map](top_flights.png)
 
 
 # Centralities 
@@ -156,3 +112,10 @@ Each edge has weights with indicated how many flights are on given route.
 
 * Newark Intl: 0.4932935916542474
 
+
+# Other properties 
+ * Radius of the graph: **3** 
+ * Diameter of the graph: **6** 
+
+# Power law degree 
+![](power_law.png)
