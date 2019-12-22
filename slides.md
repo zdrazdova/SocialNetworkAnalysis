@@ -4,10 +4,11 @@
 # General information 
 US Air 97 Network has **332** nodes and **2126** edges.
 
+Data are from company US Airways, from year 1997.
+
 Nodes represent Airports in the United States and edges represent routes between these airtports.
 
-Each edge has weights with indicated how many flights are on given route.
-
+Each edge has weights with indicated how many flights were on given route.
 
 
 # Top US airports 
@@ -59,6 +60,7 @@ Each edge has weights with indicated how many flights are on given route.
 * Lambert-St Louis Intl
 
 * Newark Intl
+
 
 
 # Top US airports 
@@ -117,5 +119,5 @@ Each edge has weights with indicated how many flights are on given route.
  * Radius of the graph: **3** 
  * Diameter of the graph: **6** 
 
-# Power law degree 
-![](power_law.png)
+# Power-law degree 
+![Power-law degree distribution](power_law.png)
