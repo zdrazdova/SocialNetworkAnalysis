@@ -116,6 +116,21 @@ def compute_centrality(name, computed, top):
         else:
             file.write("* **" + str(top[i]) + ": " + str(centrality[i]) + "**\n\n")
             
+def compute_betweenness(G):
+    file.write("\n")
+    file.write("# Centralities \n\n")
+    file.write("### Edge betweenness: \n") 
+    betweenness = nx.edge_betweenness_centrality(G)
+    sorted_top_b = sorted(betweenness.values(),reverse=True)[:10]
+    for edge in G.edges:
+        u,v,x = edge
+        if betweenness[(u,v)] in sorted_top_b:
+            if betweenness[(u,v)] == sorted_top_b[0]:
+                file.write("* " + str(u) + " -- " + str(v) + ": **" + str(betweenness[(u,v)]) + "**\n\n")
+            else:
+                file.write("* " + str(u) + " -- " + str(v) + ": " + str(betweenness[(u,v)]) + "\n\n")
+
+
 def other_properties(G):
     file.write("\n# Other properties \n")
     
@@ -171,6 +186,8 @@ with open("slides.md", "w") as file:
     compute_centrality("Degree", nx.degree_centrality(G) ,top)
     
     compute_centrality("Closeness", nx.closeness_centrality(G) ,top)
+    
+    compute_betweenness(G)    
     
     other_properties(G)
     

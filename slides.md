@@ -115,6 +115,30 @@ Each edge has weights with indicated how many flights were on given route.
 * Newark Intl: 0.4932935916542474
 
 
+# Centralities 
+
+### Edge betweenness: 
+* Anchorage Intl -- Chicago O'hare Intl: 0.05020853263354335
+
+* Anchorage Intl -- Los Angeles Intl: 0.012798272676311534
+
+* Anchorage Intl -- San Francisco Intl: 0.018803926543685387
+
+* Anchorage Intl -- Detroit Metropolitan Wayne Cou: 0.017291165030171723
+
+* Anchorage Intl -- Minneapolis-St Paul Intl/Wold-: 0.01844483276908697
+
+* Anchorage Intl -- Seattle-Tacoma Intl: 0.012622179299409222
+
+* Anchorage Intl -- Salt Lake City Intl: 0.014831607119189455
+
+* Anchorage Intl -- Bethel: **0.0694500054599061**
+
+* Juneau Intl -- Seattle-Tacoma Intl: 0.015151054817792723
+
+* Honolulu Intl -- Guam Intll: 0.02975648818840316
+
+
 # Other properties 
  * Radius of the graph: **3** 
  * Diameter of the graph: **6** 
