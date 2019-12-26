@@ -136,6 +136,18 @@ def other_properties(G, top):
     
     file.write(" * Radius of the graph: **{0}** \n".format(nx.radius(G)))
     file.write(" * Diameter of the graph: **{0}** \n".format(nx.diameter(G)))
+    diameter = nx.diameter(G)
+    counter = 0
+    for u in G.nodes:
+        for v in G.nodes:
+            if len(nx.shortest_path(G,u,v)) > diameter:
+                counter += 1
+    file.write(" * Number of routes with max shortest length: **{0}** \n".format(int(counter/2)))
+    file.write(" * All of them start: *West Tinian - Saipan - Guam - Honolulu*")
+    
+    Gcont = cp.deepcopy(G)
+    Gcont.remove_node("West Tinian")
+    file.write(" * Diameter of the graph: **{0}** \n".format(nx.diameter(Gcont)))
     max_edges = len(G.nodes)*(len(G.nodes)-1)/2
     file.write(" * Density of the graph: **{0}** \n".format(len(G.edges)/max_edges))
     to_remove = []
@@ -227,7 +239,7 @@ with open("slides.md", "w") as file:
     
     compute_centrality("Closeness", nx.closeness_centrality(G), top)
     
-    compute_betweenness(G)    
+    compute_betweenness(G)   
     
     other_properties(G, top)
     
