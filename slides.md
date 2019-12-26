@@ -145,5 +145,11 @@ Each edge has weights with indicated how many flights were on given route.
  * Density of the graph: **0.0386925344884068** 
  * Density of the graph of top airports: **1.0** 
 
+
+# Max clique 
+Size of max clique: **22**
+![Airports - max clique - map](max_clique.png)
+
+
 # Power-law degree 
 ![Power-law degree distribution](power_law.png)

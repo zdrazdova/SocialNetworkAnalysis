@@ -145,7 +145,38 @@ def other_properties(G, top):
             Gtop.remove_node(node)
     max_edges = len(Gtop.nodes)*(len(Gtop.nodes)-1)/2
     file.write(" * Density of the graph of top airports: **{0}** \n".format(len(Gtop.edges)/max_edges))
+
+
+def max_clique(G):
+    Gcls = nx.find_cliques(G)
+    top_clique = None
+    top_clique_size = 0
+    for i in Gcls:
+        if len(i)>top_clique_size:
+            top_clique_size = len(i)
+            top_clique = i
+    file.write("\n")
+    file.write("\n# Max clique \n")
+    file.write("Size of max clique: **{0}**\n".format(top_clique_size))
+    Gclique = cp.deepcopy(G)
+    for node in G.nodes:
+        if node not in top_clique:
+            Gclique.remove_node(node)
+    plt.figure(figsize=(8,3.4))
+
+    positions = {}
+    for node in Gclique.nodes:
+        data = Gclique.nodes[node]
+        posi = (data['x'],-data['y'])
+        positions.setdefault(node, posi)
     
+    nx.draw_networkx(Gclique, pos=positions, with_labels=True, node_size=100, edge_color="#ff000000")
+      
+    plt.savefig('max_clique.svg')
+    file.write("![Airports - max clique - map](max_clique.png)\n\n")
+
+    
+
 
 def power_law(G):
     degree_sequence = sorted([d for n, d in G.degree()], reverse=True)
@@ -200,9 +231,11 @@ with open("slides.md", "w") as file:
     
     other_properties(G, top)
     
+    max_clique(G)
+    
     power_law(G)
     
-
+    
     
     
     
