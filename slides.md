@@ -142,6 +142,8 @@ Each edge has weights with indicated how many flights were on given route.
 # Other properties 
  * Radius of the graph: **3** 
  * Diameter of the graph: **6** 
+ * Density of the graph: **0.0386925344884068** 
+ * Density of the graph of top airports: **1.0** 
 
 # Power-law degree 
 ![Power-law degree distribution](power_law.png)

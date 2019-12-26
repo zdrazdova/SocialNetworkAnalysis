@@ -131,11 +131,20 @@ def compute_betweenness(G):
                 file.write("* " + str(u) + " -- " + str(v) + ": " + str(betweenness[(u,v)]) + "\n\n")
 
 
-def other_properties(G):
+def other_properties(G, top):
     file.write("\n# Other properties \n")
     
     file.write(" * Radius of the graph: **{0}** \n".format(nx.radius(G)))
     file.write(" * Diameter of the graph: **{0}** \n".format(nx.diameter(G)))
+    max_edges = len(G.nodes)*(len(G.nodes)-1)/2
+    file.write(" * Density of the graph: **{0}** \n".format(len(G.edges)/max_edges))
+    to_remove = []
+    Gtop = cp.deepcopy(G)
+    for node in G.nodes:
+        if node not in top:
+            Gtop.remove_node(node)
+    max_edges = len(Gtop.nodes)*(len(Gtop.nodes)-1)/2
+    file.write(" * Density of the graph of top airports: **{0}** \n".format(len(Gtop.edges)/max_edges))
     
 
 def power_law(G):
@@ -183,13 +192,13 @@ with open("slides.md", "w") as file:
 
     top = top_flights(G)
     
-    compute_centrality("Degree", nx.degree_centrality(G) ,top)
+    compute_centrality("Degree", nx.degree_centrality(G), top)
     
-    compute_centrality("Closeness", nx.closeness_centrality(G) ,top)
+    compute_centrality("Closeness", nx.closeness_centrality(G), top)
     
     compute_betweenness(G)    
     
-    other_properties(G)
+    other_properties(G, top)
     
     power_law(G)
     
