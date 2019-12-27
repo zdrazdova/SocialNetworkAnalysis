@@ -10,6 +10,8 @@ Nodes represent Airports in the United States and edges represent routes between
 
 Each edge has weights with indicated how many flights were on given route.
 
+Each node has *x* and *y* coordinates that can be mapped to the geographical location of the airport.
+
 
 # Top US airports 
 **Top ten airports with flights to/from most other airports:** 
@@ -139,13 +141,46 @@ Each edge has weights with indicated how many flights were on given route.
 * Honolulu Intl -- Guam Intll: 0.02975648818840316
 
 
-# Other properties 
- * Radius of the graph: **3** 
- * Diameter of the graph: **6** 
+# Graph diameter 
+Social networks have small diameter 
+
+Random network with the same amount of nodes and edges has diameter **4** 
+
+Our network has diameter **6**
+
  * Number of routes with max shortest length: **56** 
- * All of them start: *West Tinian - Saipan - Guam - Honolulu* * Diameter of the graph: **5** 
- * Density of the graph: **0.0386925344884068** 
- * Density of the graph of top airports: **1.0** 
+ * All of them start: *West Tinian* - *Saipan* - *Guam* - *Honolulu*
+ * Most of them end: *Anchorage* - *Bethel* - *SAT*
+ * Where SAT stands for Small Alaskan Town = {Tuluksak, Akiachak, Akiak, Kwethluk, Napaskiak, Napakiak, Tuntutuliak, Eek, Kongiganak, Kwigillingok, Quinhagak}
+
+
+
+
+# Islands in Pacific Ocean
+![Airports around Guam territory - map](guam.png)
+
+
+
+
+# Small Alaskan Towns
+![Airports in southern Alaska - map](alaska.png)
+
+
+# Other properties 
+Radius of the graph: **3** 
+
+
+Density of the graph: **0.0386925344884068** 
+
+
+Density of the graph of top airports: **1.0** 
+
+US Air 97 is **connected** network. 
+
+It has **56** bridges. 
+
+Most important bridge is **Honolulu Intl** to **Guam Intll**. 
+
 
 
 # Max clique 

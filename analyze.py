@@ -12,6 +12,7 @@ def intro(G):
     file.write("Data are from company US Airways, from year 1997.\n\n")
     file.write("Nodes represent Airports in the United States and edges represent routes between these airtports.\n\n")
     file.write("Each edge has weights with indicated how many flights were on given route.\n\n")
+    file.write("Each node has *x* and *y* coordinates that can be mapped to the geographical location of the airport.\n\n")
 
 
 def top_reach(G):
@@ -131,33 +132,127 @@ def compute_betweenness(G):
                 file.write("* " + str(u) + " -- " + str(v) + ": " + str(betweenness[(u,v)]) + "\n\n")
 
 
-def other_properties(G, top):
-    file.write("\n# Other properties \n")
+def random_graph(nodes,edges):
+    G = nx.Graph()
+    for n in range(nodes):
+        G.add_node(n)
+    e = 0
+    while e < edges:
+        u = np.random.randint(0,nodes)
+        v = np.random.randint(0,nodes)
+        if u != v and (u,v) not in G.edges and (v,u) not in G.edges:
+            G.add_edge(u,v)  
+            e = e+1 
+    return G
+
+def diameter(G):
+    file.write("\n")
+    file.write("# Graph diameter \n")
+    file.write("Social networks have small diameter \n\n")
+    R = random_graph(len(G.nodes), len(G.edges))
     
-    file.write(" * Radius of the graph: **{0}** \n".format(nx.radius(G)))
-    file.write(" * Diameter of the graph: **{0}** \n".format(nx.diameter(G)))
+    file.write("Random network with the same amount of nodes and edges has diameter **{0}** \n\n".format(nx.diameter(R)))
     diameter = nx.diameter(G)
     counter = 0
     for u in G.nodes:
         for v in G.nodes:
             if len(nx.shortest_path(G,u,v)) > diameter:
                 counter += 1
+    file.write("Our network has diameter **{0}**\n\n".format(diameter))
     file.write(" * Number of routes with max shortest length: **{0}** \n".format(int(counter/2)))
-    file.write(" * All of them start: *West Tinian - Saipan - Guam - Honolulu*")
+    file.write(" * All of them start: *West Tinian* - *Saipan* - *Guam* - *Honolulu*\n")
+    file.write(" * Most of them end: *Anchorage* - *Bethel* - *SAT*\n")
+    file.write(" * Where SAT stands for Small Alaskan Town = {Tuluksak, Akiachak, Akiak, Kwethluk, Napaskiak, Napakiak, Tuntutuliak, Eek, Kongiganak, Kwigillingok, Quinhagak}\n\n")
     
-    Gcont = cp.deepcopy(G)
-    Gcont.remove_node("West Tinian")
-    file.write(" * Diameter of the graph: **{0}** \n".format(nx.diameter(Gcont)))
+    Gal = cp.deepcopy(G)
+    
+    Alaska = {"Anchorage Intl", "Bethel", "Tuluksak", "Akiachak", "Akiak", "Kwethluk", "Napaskiak", "Napakiak", "Tuntutuliak", "Eek", "Kongiganak", "Kwigillingok", "Quinhagak"}
+    
+    Gguam = cp.deepcopy(G)
+    
+    Guam = {"Saipan Intl", "Rota Intl", "Guam Intll", "Babelthuap/Koror", "West Tinian"}
+
+    
+    for node in G.nodes:
+        if node not in Alaska:
+            Gal.remove_node(node)
+        if node not in Guam:
+            Gguam.remove_node(node)
+      
+    plt.figure(figsize=(8,3.4))
+
+    positions = {}
+    for node in Gguam.nodes:
+        data = Gguam.nodes[node]
+        posi = (data['x'],-data['y'])
+        positions.setdefault(node, posi)
+    
+    nx.draw_networkx(Gguam, pos=positions, with_labels=True, node_size=40, edge_color="#ff000000")
+    
+    for (u, v, d) in Gguam.edges(data=True):
+        w =  d['weight']
+        edge = [(u,v,d)]
+        nx.draw_networkx_edges(Gguam, pos=positions, edgelist=edge, equidistant=True, alpha=0.7, width=w*40)
+    
+    plt.savefig('guam.svg')
+    file.write("\n\n")
+    file.write("\n# Islands in Pacific Ocean\n")
+    file.write("![Airports around Guam territory - map](guam.png)\n\n")  
+    
+    plt.figure(figsize=(8,3.4))
+
+    positions = {}
+    for node in Gal.nodes:
+        data = Gal.nodes[node]
+        posi = (data['x'],-data['y'])
+        positions.setdefault(node, posi)
+    
+    nx.draw_networkx(Gal, pos=positions, with_labels=True, node_size=40, edge_color="#ff000000")
+    
+    for (u, v, d) in Gal.edges(data=True):
+        w =  d['weight']
+        edge = [(u,v,d)]
+        nx.draw_networkx_edges(Gal, pos=positions, edgelist=edge, equidistant=True, alpha=0.7, width=w*40)
+    
+    plt.savefig('alaska.svg')
+    file.write("\n\n")
+    file.write("\n# Small Alaskan Towns\n")
+    file.write("![Airports in southern Alaska - map](alaska.png)\n\n")
+ 
+
+
+
+def other_properties(G, top):
+    file.write("\n# Other properties \n")
+    
+    file.write("Radius of the graph: **{0}** \n\n\n".format(nx.radius(G)))
+    
     max_edges = len(G.nodes)*(len(G.nodes)-1)/2
-    file.write(" * Density of the graph: **{0}** \n".format(len(G.edges)/max_edges))
+    file.write("Density of the graph: **{0}** \n\n\n".format(len(G.edges)/max_edges))
     to_remove = []
     Gtop = cp.deepcopy(G)
     for node in G.nodes:
         if node not in top:
             Gtop.remove_node(node)
     max_edges = len(Gtop.nodes)*(len(Gtop.nodes)-1)/2
-    file.write(" * Density of the graph of top airports: **{0}** \n".format(len(Gtop.edges)/max_edges))
+    file.write("Density of the graph of top airports: **{0}** \n\n".format(len(Gtop.edges)/max_edges))
 
+    Gbrid = cp.deepcopy(G)
+    counter = 0
+    top_weight = 0
+    top_edge = 0
+    for (u, v, d) in G.edges(data=True):
+        w =  d['weight']
+        Gbrid.remove_edge(u,v)
+        if not nx.is_connected(Gbrid):
+            counter += 1
+            if w > top_weight:
+                top_weight = w
+                top_edge = (u,v)
+        Gbrid.add_edge(u,v)
+    file.write("US Air 97 is **connected** network. \n\n".format(counter))
+    file.write("It has **{0}** bridges. \n\n".format(counter))
+    file.write("Most important bridge is **{0}** to **{1}**. \n\n".format(top_edge[0],top_edge[1]))
 
 def max_clique(G):
     Gcls = nx.find_cliques(G)
@@ -228,6 +323,8 @@ G=nx.read_pajek("USAir97.net")
 G = G.to_undirected(reciprocal=False, as_view=False)
 
 with open("slides.md", "w") as file:
+
+    
     
     intro(G)
 
@@ -239,14 +336,15 @@ with open("slides.md", "w") as file:
     
     compute_centrality("Closeness", nx.closeness_centrality(G), top)
     
-    compute_betweenness(G)   
+    compute_betweenness(G)  
+    
+    diameter(G) 
     
     other_properties(G, top)
     
     max_clique(G)
     
     power_law(G)
-    
     
     
     
