@@ -253,6 +253,18 @@ def other_properties(G, top):
     file.write("US Air 97 is **connected** network. \n\n".format(counter))
     file.write("It has **{0}** bridges. \n\n".format(counter))
     file.write("Most important bridge is **{0}** to **{1}**. \n\n".format(top_edge[0],top_edge[1]))
+    
+    degree_sum = 0
+    max_degree = 0
+    for node in G.nodes:
+        degree = G.degree[node]
+        degree_sum += degree
+        if degree > max_degree:
+            max_degree = degree
+    
+    file.write("Maximal degree is **{0}**. \n\n".format(max_degree))
+    file.write("Minimal degree is **1**. \n\n".format(max_degree))
+    file.write("Average degree is **{0}**. \n\n".format(degree_sum/len(G.nodes)))
 
 def max_clique(G):
     Gcls = nx.find_cliques(G)
@@ -282,10 +294,31 @@ def max_clique(G):
     plt.savefig('max_clique.svg')
     file.write("![Airports - max clique - map](max_clique.png)\n\n")
 
+
+def small_world(G):
+    file.write("\n")
+    file.write("# Small world effect \n")
+    file.write("Social networks tend to be characterized by very short paths between randomly chosen pairs of people.\n\n ")
+    file.write("We compared average shortes path length in our graph and randomly generated graph with the same amount of nodes and edges. \n\n")
+
+    R = random_graph(len(G.nodes),len(G.edges))
+
+    file.write("US Air 97: **{0}** \n\n".format(nx.average_shortest_path_length(G)))
+    file.write("Random graph: **{0}**\n\n".format(nx.average_shortest_path_length(R)))
+    file.write("***Small world effect not present***\n\n".format(nx.average_shortest_path_length(R)))
+
+
+def power_law_general():
+    file.write("\n")
+    file.write("# Power-law degree distribution \n")
+    file.write("Random graph - homogenous degree distribution -> Binomial degree distribution \n\n")
+    file.write("Real world network - heterogenous degree distribution -> **Power-law degree** distribution \n\n")
+    file.write(" * many nodes with only few neighbors \n\n")
+    file.write(" * few hubs with large number of links \n\n")
+    file.write("**Our graph has power-law degree distribution** see next slides \n\n")
     
 
-
-def power_law(G):
+def power_law(G,name):
     degree_sequence = sorted([d for n, d in G.degree()], reverse=True)
     max_degree = max(degree_sequence)
     
@@ -311,20 +344,19 @@ def power_law(G):
     plt.ylabel("Number of nodes")
     plt.xlabel("Degree")
     
-    plt.savefig('power_law.png')
+    figname = name+"power_law.png"
+    plt.savefig(figname)
     
     
-    file.write("\n")
-    file.write("# Power-law degree \n")
+    file.write("\n\n")
+    file.write("# Degree distribution: {0} \n".format(name))
     
-    file.write("![Power-law degree distribution](power_law.png)")
+    file.write("![Degree distribution {0}]({1})".format(name,figname))
 
 G=nx.read_pajek("USAir97.net")
 G = G.to_undirected(reciprocal=False, as_view=False)
 
 with open("slides.md", "w") as file:
-
-    
     
     intro(G)
 
@@ -344,7 +376,13 @@ with open("slides.md", "w") as file:
     
     max_clique(G)
     
-    power_law(G)
+    small_world(G)
+    
+    power_law_general()
+    
+    power_law(G, "UsAir97")
+    
+    power_law(random_graph(len(G.nodes),len(G.edges)), "RandomGraph")
     
     
     

@@ -181,6 +181,12 @@ It has **56** bridges.
 
 Most important bridge is **Honolulu Intl** to **Guam Intll**. 
 
+Maximal degree is **139**. 
+
+Minimal degree is **1**. 
+
+Average degree is **12.80722891566265**. 
+
 
 
 # Max clique 
@@ -188,5 +194,33 @@ Size of max clique: **22**
 ![Airports - max clique - map](max_clique.png)
 
 
-# Power-law degree 
-![Power-law degree distribution](power_law.png)
+# Small world effect 
+Social networks tend to be characterized by very short paths between randomly chosen pairs of people.
+
+ We compared average shortes path length in our graph and randomly generated graph with the same amount of nodes and edges. 
+
+US Air 97: **2.7381247042550867** 
+
+Random graph: **2.556127834601245**
+
+***Small world effect not present***
+
+
+# Power-law degree distribution 
+Random graph - homogenous degree distribution -> Binomial degree distribution 
+
+Real world network - heterogenous degree distribution -> **Power-law degree** distribution 
+
+ * many nodes with only few neighbors 
+
+ * few hubs with large number of links 
+
+**Our graph has power-law degree distribution** see next slides 
+
+
+
+# Degree distribution: UsAir97 
+![Degree distribution UsAir97](UsAir97power_law.png)
+
+# Degree distribution: RandomGraph 
+![Degree distribution RandomGraph](RandomGraphpower_law.png)
