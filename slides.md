@@ -197,13 +197,13 @@ Size of max clique: **22**
 # Small world effect 
 Social networks tend to be characterized by very short paths between randomly chosen pairs of people.
 
- We compared average shortes path length in our graph and randomly generated graph with the same amount of nodes and edges. 
+ We compared average shortes path length in our graph and randomly generated graph with the same amount of nodes and edges. (Random graphs show low average path length)
 
 US Air 97: **2.7381247042550867** 
 
 Random graph: **2.556127834601245**
 
-***Small world effect not present***
+***Small world effect present***
 
 
 # Power-law degree distribution 
@@ -224,3 +224,5 @@ Real world network - heterogenous degree distribution -> **Power-law degree** di
 
 # Degree distribution: RandomGraph 
 ![Degree distribution RandomGraph](RandomGraphpower_law.png)
+
+# Thank you for you
